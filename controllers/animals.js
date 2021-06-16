@@ -1,4 +1,5 @@
-const db = require('./database')
+const db = require('../database')
+const animal_model = require('../models/animals')
 
 // TODO: Generally clean this up. In its current state, it's only meant for testing core functionality.
 
@@ -24,7 +25,7 @@ exports.setup = function(app) {
 			return
 		}
 
-		db.animals.findOne({tracking: animal.tracking}, function(err, result) {
+		/*db.animals.findOne({tracking: animal.tracking}, function(err, result) {
 			if (err) {
 				console.log("Error checking if animal exists")
 				return
@@ -42,6 +43,13 @@ exports.setup = function(app) {
 			} else {
 				console.log("Animal already exists!")
 			}
+		})*/
+
+		animal_model.add(animal, function(success, err) {
+			if (!success)
+				console.log('Error adding animal: ' + err)
+			else
+				console.log('Successfully added new animal!')
 		})
 	})
 
@@ -152,6 +160,7 @@ function getPositiveInt(num) {
 	return n
 }
 
+// TODO: Type checking and safety checking of strings
 // This extracts the animal parameters from a request body. If any are missing, it returns null.
 function getAnimal(body) {
 	var animal = {}

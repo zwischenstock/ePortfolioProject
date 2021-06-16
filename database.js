@@ -12,6 +12,7 @@ class ZooDatabase {
 		this.connected = false
 
 		this.client = new MongoClient(uri)
+		this.uri = uri
 		this.run()
 	}
 
