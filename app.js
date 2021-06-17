@@ -8,8 +8,8 @@ const app = express()
 const IN_PROD = false;
 
 const db = require('./database.js')
-const routing_animals = require('./controllers/animals')
-const routing_users = require('./controllers/users')
+const routing_animals = require('./controllers/animal')
+const routing_users = require('./controllers/user')
 
 app.use(session({
 	secret: process.env.SESSION_SECRET,

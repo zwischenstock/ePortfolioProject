@@ -1,4 +1,4 @@
-const {MongoClient} = require('mongodb')
+const { MongoClient } = require('mongodb')
 
 // TODO: Authentication
 const uri = "mongodb://" +
@@ -12,7 +12,7 @@ class ZooDatabase {
 		this.connected = false
 
 		this.client = new MongoClient(uri)
-		this.uri = uri
+		this.uri = uri // This is put here so it can be used by other modules, such as MongoStore for sessions
 		this.run()
 	}
 
@@ -27,7 +27,7 @@ class ZooDatabase {
 
 			// Convenience accessors
 			this.animals = this.db.collection("animals")
-			//this.users = this.client.db("users")
+			this.users = this.db.collection("users")
 
 			this.connected = true
 		} finally {

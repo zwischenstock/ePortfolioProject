@@ -1,5 +1,5 @@
 const db = require('../database')
-const animal_model = require('../models/animals')
+const animal_model = require('../models/animal')
 
 // TODO: Generally clean this up. In its current state, it's only meant for testing core functionality.
 
@@ -25,26 +25,6 @@ exports.setup = function(app) {
 			return
 		}
 
-		/*db.animals.findOne({tracking: animal.tracking}, function(err, result) {
-			if (err) {
-				console.log("Error checking if animal exists")
-				return
-			}
-
-			if (!result) {
-				db.animals.insertOne(animal, function(err2, result2) {
-					if (err2 || result2 == null) {
-						console.log("Error inserting animal")
-						return
-					}
-
-					console.log("Successfully added new animal to the database.")
-				})
-			} else {
-				console.log("Animal already exists!")
-			}
-		})*/
-
 		animal_model.add(animal, function(success, err) {
 			if (!success)
 				console.log('Error adding animal: ' + err)
@@ -62,21 +42,13 @@ exports.setup = function(app) {
 
 		var id = getPositiveInt(req.body.tracking)
 		if (id == null) {
-			console.log("Bad number")
+			console.log("Bad tracking number")
 			return
 		}
 
-		console.log("Attempting to delete animal with tracking id of " + id + "...")
-		db.animals.deleteOne({tracking: id}, function(err, result) {
-			if (err || result == null) {
-				console.log("Failed to delete")
-				return
-			} else if (result.result.ok == 1) {
-				console.log("Successfully deleted")
-			} else {
-				console.log("Unknown error")
-			}
-		})
+		animal_model.remove({tracking: id}, function(success, err) {
+			console.log((success ? 'Successfully deleted' : err))
+		}
 	})
 
 	// Modify animal information (again, accessible on the animal's information page)
@@ -116,13 +88,8 @@ exports.setup = function(app) {
 		if (req.body.nursing != null && typeof req.body.nursing == 'boolean')
 			newFields.nursing = req.body.nursing
 
-		db.animals.updateOne({tracking: tracking}, {$set: newFields}, function(err, result) {
-			if (err || result == null) {
-				console.log("Failed to update animal record")
-				return
-			}
-
-			console.log("Result of update: " + result.result.ok)
+		animal_model.update({tracking: tracking}, newFields, function(success, err) {
+			console.log((success ? 'Successfully updated' : err))
 		})
 	})
 
@@ -139,15 +106,13 @@ exports.setup = function(app) {
 			return
 		}
 
-		db.animals.findOne({tracking: id}, function(err, result) {
-			if (err || result == null) {
-				res.send("Failed to find animal")
+		animal_model.get(id, function(success, err, animal) {
+			if (!success) {
+				res.send('Failed to find animal')
 				return
 			}
 
-			// TODO: Filter data to only what's necessary, eg remove _id
-
-			res.render('zoo/animal', {animal: result})
+			res.render('zoo/animal', {animal: animal})
 		})
 	})
 }
