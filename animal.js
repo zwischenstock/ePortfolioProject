@@ -11,7 +11,7 @@ class Animal {
 		this.species = species
 		this.animal = animal
 		this.eggs = (Animal.canLayEggs(species) ? eggs : 0)
-		this.nursing = (Animal.canNurse ? nursing : false)
+		this.nursing = (Animal.canNurse(species) ? nursing : false)
 	}
 
 	// TODO: Check if this is necessary. Potentially used when sending to a view.
