@@ -33,6 +33,7 @@ app.set('view engine', 'pug')
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
+// TODO: If the user is logged in, redirect to '/zoo'
 app.get('/', function(req, res) {
 	res.render('index', {message: 'Hello, world! If you\'re seeing this, the basics are working.'})
 })
@@ -40,6 +41,12 @@ app.get('/', function(req, res) {
 // The routes are separated into their own files for organization
 routing_animals.setup(app)
 routing_users.setup(app)
+
+// All routes should be set after this, so default to 404
+app.use(function(req, res, next) {
+	res.status(404)
+	res.redirect('/')
+})
 
 app.listen(process.env.WEB_PORT)
 
