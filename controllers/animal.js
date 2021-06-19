@@ -48,7 +48,7 @@ exports.setup = function(app) {
 
 		animal_model.remove({tracking: id}, function(success, err) {
 			console.log((success ? 'Successfully deleted' : err))
-		}
+		})
 	})
 
 	// Modify animal information (again, accessible on the animal's information page)
