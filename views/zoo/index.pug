@@ -1,7 +1,8 @@
+doctype html
 html
-  head
-    title= "CS-499 ePortfolio"
+  include ../includes/header.pug
   body
     ul
       each animal in animals
-        li= animal.name + " (" + animal.species + ", " + animal.animal + ")" 
+        li= animal.name + " (" + animal.species + ", " + animal.animal + ")"
+    include ../includes/bodyend.pug
