@@ -1,12 +1,7 @@
 const db = require('../database')
 const animal_model = require('../models/animal')
 
-// TODO: Generally clean this up. In its current state, it's only meant for testing core functionality.
-
-// TODO: Proper error handling with using views
-// TODO: Authentication
 exports.setup = function(app, util) {
-	// Display all animals (TODO: Pagination)
 	app.get('/zoo', util.userView, function(req, res) {
 		db.animals.find({}).toArray(function(err, result) {
 			for(var animal of result) {

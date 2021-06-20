@@ -4,7 +4,6 @@ const Species = {
 	Mammal: 'Mammal'
 }
 
-// TODO: Validity checking on parameters
 class Animal {
 	constructor(tracking, name, species, animal, eggs, nursing) {
 		if (typeof nursing == 'string')
@@ -18,7 +17,6 @@ class Animal {
 		this.nursing = (Animal.canNurse(species) ? nursing : false)
 	}
 
-	// TODO: Check if this is necessary. Potentially used when sending to a view.
 	toObject() {
 		return {
 			tracking: this.tracking,

@@ -71,7 +71,7 @@ class UserModel {
 						return
 					}
 
-					var id = i_results.ops[0]._id // TODO: Maybe check if this is valid? Can it not be?
+					var id = i_results.ops[0]._id
 					callback(true, new User(id, username, role))
 				})
 			})
