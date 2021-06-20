@@ -2,7 +2,45 @@ doctype html
 html
   include ../includes/header.pug
   body
-    ul
-      each animal in animals
-        li= animal.name + " (" + animal.species + ", " + animal.animal + ")"
+    if alert
+      div(class="alert alert-danger" role="alert") #{alert}
+
+    if notice
+      div(class="alert alert-primary" role="alert") #{notice}
+  
+    div(class="table-responsive")
+      table(class="table table-hover table-striped")
+        thread
+          tr
+            th= "#"
+            th= "Name"
+            th= "Species"
+            th= "Type"
+            th= "Eggs"
+            th= "Nursing"
+
+        tbody
+          each animal in animals
+            if user && user.role == 'Admin'
+              tr(style="transform: rotate(0);" onclick="rowClick("+animal.tracking+")")
+                th(scope="row")
+                  a(class="stretched-link" href="/zoo/animal/"+animal.tracking) #{animal.tracking}
+                td= animal.name
+                td= animal.species
+                td= animal.animal
+                td= (animal.species == "Oviparous" ? animal.eggs : "")
+                td= (animal.species == "Mammal" ? (animal.nursing ? "Yes" : "No") : "")
+            else
+              tr
+                td= animal.tracking
+                td= animal.name
+                td= animal.species
+                td= animal.animal
+                td= (animal.species == "Oviparous" ? animal.eggs : "")
+                td= (animal.species == "Mammal" ? (animal.nursing ? "Yes" : "No") : "")
+
     include ../includes/bodyend.pug
+    script.
+      function rowClick(tracking) {
+        location.href="/zoo/animal/"+tracking
+      }

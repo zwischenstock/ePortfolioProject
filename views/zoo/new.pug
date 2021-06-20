@@ -1,6 +1,44 @@
 doctype html
 html
   include ../includes/header.pug
+
   body
-    h3= "Check back later!"
+    if alert
+      div(class="alert alert-danger" role="alert") #{alert}
+
+    if notice
+      div(class="alert alert-primary" role="alert") #{notice}
+
+    form(id="animalActionForm" class="col-lg-6 offset-lg-3" method="POST" action="/zoo/new")
+      div(class="form-group row justify-content-center mt-3")
+        label(for="animalName" class="col-sm-2 col-form-label") Name
+        div(class="col-sm-10")
+          input(type="text" class="form-control" id="animalName" name="name" placeholder="Animal name")
+
+        label(for="animalSpecies" class="col-sm-2 col-form-label mt-2") Species
+        div(class="col-sm-10 mt-2")
+          select(id="animalSpecies" class="custom-select" name="species" aria-label="Mammal")
+            option(value="Mammal" selected) Mammal
+            option(value="Oviparous") Oviparous
+
+        label(for="animalType" class="col-sm-2 col-form-label mt-2") Type
+        div(class="col-sm-10 mt-2")
+          input(type="text" class="form-control" id="animalType" name="animal" placeholder="Animal type (dog/cat/etc)")
+
+        label(for="animalEggs" class="col-sm-2 col-form-label mt-2") Eggs
+        div(class="col-sm-10 mt-2")
+          input(type="number" class="form-control" id="animalEggs" name="eggs" value="0")
+
+        label(for="animalNursing" class="col-sm-2 col-form-label mt-2") Nursing
+        div(class="col-sm-10 mt-2")
+          select(id="animalNursing" class="custom-select" name="nursing" aria-label="No")
+            option(value="No" selected) No
+            option(value="Yes") Yes
+
+        label(for="animalTracking" class="col-sm-2 col-form-label mt-2") Tracking
+        div(class="col-sm-10 mt-2")
+          input(type="number" class="form-control" id="animalTracking" name="tracking" value="0")
+
+        button(type="submit" class="btn btn-outline-primary mx-sm-2 mb-2 mt-3") Submit
+
     include ../includes/bodyend.pug

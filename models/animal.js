@@ -1,7 +1,8 @@
 const db = require('../database')
 const { Animal, Species } = require('../animal')
+const escape = require('escape-html')
+const util = require('../util')
 
-// TODO: Proper typechecking and validation of passed arguments.
 class AnimalModel {
 	constructor() {
 	}
@@ -27,7 +28,7 @@ class AnimalModel {
 					callback(true)
 				})
 			} else {
-				callback(false, 'Animal already exists!')
+				callback(false, 'Tracking number already exists!')
 			}
 		})
 	}
@@ -50,14 +51,43 @@ class AnimalModel {
 		if (!callback)
 			callback = () => {}
 
-		db.animals.updateOne({tracking: animal.tracking}, {$set: newFields}, function(err, result) {
-			if (err || result == null) {
-				callback(false, 'Failed to update animal record')
-				return
-			}
+		newFields = processFields(newFields)
+		if (!newFields) {
+			callback(false, 'Invalid parameters')
+			return
+		}
 
-			callback(true)
-		})
+		if (animal.tracking != newFields.tracking) {
+			db.animals.findOne({tracking: newFields.tracking}, function(err, result) {
+				if (err) {
+					callback(false, 'Failed checking for existing animals with new tracking number')
+					return
+				}
+
+				if (result) {
+					callback(false, 'An animal already has that tracking number!')
+					return
+				}
+
+				db.animals.updateOne({tracking: animal.tracking}, {$set: newFields}, function(err, result) {
+					if (err || result == null) {
+						callback(false, 'Failed to update animal record')
+						return
+					}
+
+					callback(true)
+				})
+			})
+		} else {
+			db.animals.updateOne({tracking: animal.tracking}, {$set: newFields}, function(err, result) {
+				if (err || result == null) {
+					callback(false, 'Failed to update animal record')
+					return
+				}
+
+				callback(true)
+			})
+		}
 	}
 
 	get(tracking, callback) {
@@ -70,10 +100,59 @@ class AnimalModel {
 				return
 			}
 
-			// TODO: Create new animal object here to return and filter out the _id field
-			callback(false, null, result)
+			callback(true, new Animal((
+				result.tracking,
+				result.name,
+				result.species,
+				result.animal,
+				result.eggs,
+				result.nursing == 'true')), result)
 		})
 	}
+
+	processFields(fields, completeAnimal) {
+		return processFields(fields, completeAnimal)
+	}
+}
+
+// Requires a tracking number
+function processFields(fields, completeAnimal) {
+	var anim = {}
+
+	if (!fields.tracking)
+		return null
+	else
+		anim.tracking = util.getPositiveInt(fields.tracking)
+
+	if (fields.name && typeof fields.name == 'string')
+		anim.name = escape(fields.name)
+
+	if (fields.species && typeof fields.species == 'string' && Species[fields.species])
+		anim.species = fields.species
+
+	if (fields.animal && typeof fields.animal == 'string')
+		anim.animal = escape(fields.animal)
+
+	if (fields.eggs != null)
+		anim.eggs = util.getPositiveInt(fields.eggs)
+
+	if (fields.nursing == 'true' || fields.nursing == 'false')
+		fields.nursing = fields.nursing == 'true'
+	if (fields.nursing == 'Yes' || fields.nursing == 'No')
+		fields.nursing = fields.nursing == 'Yes'
+
+	if (fields.nursing != null && typeof fields.nursing == 'boolean')
+		anim.nursing = fields.nursing
+
+	if (completeAnimal) {
+		if (anim.name == null || anim.species == null || anim.animal == null || anim.eggs == null || anim.nursing == null) {
+			return null
+		}
+
+		return new Animal(anim.tracking, anim.name, anim.species, anim.animal, anim.eggs, anim.nursing)
+	}
+
+	return anim
 }
 
 module.exports = new AnimalModel()

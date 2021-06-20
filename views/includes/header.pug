@@ -6,7 +6,7 @@ head
     nav(class="navbar navbar-light bg-light justify-content-between")
       a(class="navbar-brand" href="/zoo") Wildlife Zoo
       form(id="navbarForm" class="form-inline" method="POST" action="/logout")
-        if canAdd
+        if canAdd && user && user.role == 'Admin'
           button(class="btn btn-sm btn-outline-success mx-sm-2 mb-0" type="submit" onclick="navbarClick('GET', '/zoo/new')") Add Animal
 
         button(class="btn btn-sm btn-outline-secondary" type="submit" onclick="navbarClick('GET', '/profile')") Profile

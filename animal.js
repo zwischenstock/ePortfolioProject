@@ -6,7 +6,11 @@ const Species = {
 
 // TODO: Validity checking on parameters
 class Animal {
-	constructor(name, species, animal, eggs, nursing) {
+	constructor(tracking, name, species, animal, eggs, nursing) {
+		if (typeof nursing == 'string')
+			nursing = nursing == 'true'
+
+		this.tracking = tracking
 		this.name = name
 		this.species = species
 		this.animal = animal
@@ -17,6 +21,7 @@ class Animal {
 	// TODO: Check if this is necessary. Potentially used when sending to a view.
 	toObject() {
 		return {
+			tracking: this.tracking,
 			name: this.name,
 			species: this.species,
 			animal: this.animal,
