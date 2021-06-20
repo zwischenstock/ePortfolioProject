@@ -3,22 +3,26 @@ const animal_model = require('../models/animal')
 
 // TODO: Generally clean this up. In its current state, it's only meant for testing core functionality.
 
-// TODO: Make proper views. All current ones are placeholders to test for functionality
 // TODO: Proper error handling with using views
 // TODO: Authentication
-exports.setup = function(app) {
+exports.setup = function(app, util) {
 	// Display all animals (TODO: Pagination)
-	app.get('/zoo', function(req, res) {
+	app.get('/zoo', util.userView, function(req, res) {
 		db.animals.find({}).toArray(function(err, result) {
-			res.render('zoo/index', {animals: result})
+			util.render(req, res, 'zoo/index', {animals: result})
 		})
 	})
 
 	// Add an animal
-	app.get('/zoo/new', function(req, res) {
-		res.render('zoo/new', {})
+	app.get('/zoo/new', util.adminView, function(req, res) {
+		util.render(req, res, 'zoo/new', {})
 	})
 	app.post('/zoo/new', function(req, res) {
+		if (!util.isAdmin(req)) {
+			// TODO: Handle this
+			return
+		}
+
 		var animal = getAnimal(req.body)
 		if (!animal) {
 			console.log("Bad request")
@@ -35,6 +39,11 @@ exports.setup = function(app) {
 
 	// Remove an animal (this should be accessible on the animal's information page)
 	app.post('/zoo/delete', function(req, res) {
+		if (!util.isAdmin(req)) {
+			// TODO: Handle this
+			return
+		}
+
 		if (req.body == null || req.body.tracking == null) {
 			console.log("Bad request")
 			return
@@ -53,6 +62,11 @@ exports.setup = function(app) {
 
 	// Modify animal information (again, accessible on the animal's information page)
 	app.post('/zoo/modify', function(req, res) {
+		if (!util.isAdmin(req)) {
+			// TODO: Handle this
+			return
+		}
+
 		if (req.body == null || req.body.tracking == null) {
 			console.log("Bad request")
 			return
@@ -94,7 +108,7 @@ exports.setup = function(app) {
 	})
 
 		// Display information about a specific animal
-	app.get('/zoo/animal/:id', function(req, res) {
+	app.get('/zoo/animal/:id', util.userView, function(req, res) {
 		if (req.params.id == null) {
 			res.send("Bad input")
 			return
@@ -112,7 +126,7 @@ exports.setup = function(app) {
 				return
 			}
 
-			res.render('zoo/animal', {animal: animal})
+			util.render(req, res, 'zoo/animal', {animal: animal})
 		})
 	})
 }

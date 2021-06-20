@@ -27,7 +27,7 @@ class UserModel {
 					return
 				}
 
-				callback(true, User(results._id, username, results.role || Roles.Guest))
+				callback(true, new User(results._id, username, results.role || Roles.Guest))
 			})
 		})
 	}
@@ -38,8 +38,8 @@ class UserModel {
 		if (!callback)
 			callback = () => {}
 
-		if (password.length < 6) {
-			callback(false, null, 'Your password must be at least 6 characters long!')
+		if (password.length < 5) {
+			callback(false, null, 'Your password must be at least 5 characters long!')
 			return
 		}
 
@@ -72,12 +72,13 @@ class UserModel {
 					}
 
 					var id = i_results.ops[0]._id // TODO: Maybe check if this is valid? Can it not be?
-					callback(true, User(id, username, role))
+					callback(true, new User(id, username, role))
 				})
 			})
 		})
 	}
 
+	// The callback is given 2 parameters: (wasSuccessful: bool, err: string)
 	// Both passwords are in plaintext as if given from a POST request.
 	changePassword(id, oldPassword, newPassword, callback) {
 		if (!callback)

@@ -1,0 +1,36 @@
+doctype html
+html
+  include includes/header.pug
+  meta(name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no")
+  style
+    include styles/profile.css
+
+  body
+    if alert
+      div(class="alert alert-danger" role="alert") #{alert}
+
+    if notice
+      div(class="alert alert-primary" role="alert") #{notice}
+
+    if user
+      div(class="form-group row mx-sm-2")
+        label(for="staticUsername" class="col-sm-2 col-form-label") Username
+        div(class="col-sm-10")
+          input(type="text" readonly class="form-control-plaintext" id="staticUsername" value=user.username)
+
+        label(for="staticRole" class="col-sm-2 col-form-label") Access
+        div(class="col-sm-10")
+          input(type="text" readonly class="form-control-plaintext" id="staticRole" value=user.role)
+
+      form(class="form-inline" method="POST" action="/newpassword")
+        div(class="form-group mx-sm-2 mb-2")
+          label(for="oldPassword" class="sr-only") Old Password
+          input(type="password" class="form-control" id="oldPassword" placeholder="Old Password" name="oldPassword" required)
+
+        div(class="form-group mx-sm-0 mb-2")
+          label(for="newPassword" class="sr-only") New Password
+          input(type="password" class="form-control" id="newPassword" placeholder="New Password" name="newPassword" required)
+
+        button(type="submit" class="btn btn-primary mx-sm-2 mb-2") Confirm
+
+    include includes/bodyend.pug

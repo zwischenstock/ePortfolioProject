@@ -1,5 +1,26 @@
 html
   include includes/header.pug
-  body
-    h1= message
+  meta(name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no")
+  style
+    include styles/signin.css
+
+  body(class="text-center")
+    form(id="loginOrRegister" class="form-signin" method="POST" action="/login")
+      if alert
+        div(class="alert alert-danger" role="alert") #{alert}
+      h1(class="h3 mb-3 font-weight-normal") Wildlife Zoo Login
+      label(for="inputUsername" class="sr-only") Username
+      input(type="username" id="inputUsername" class="form-control" placeholder="Username" name="username" required autofocus)
+
+      label(for="inputPassword" class="sr-only") Password
+      input(type="password" id="inputPassword" class="form-control" placeholder="Password" name="password" required)
+
+      button(class="btn btn-lg btn-primary btn-block" type="submit" id="signinSubmit" onclick="submitForm('/login')") Sign in
+      button(class="btn btn-lg btn-secondary btn-block" type="submit" id="registerSubmit" onclick="submitForm('/register')") Register
+
     include includes/bodyend.pug
+    script.
+      function submitForm(action) {
+        document.getElementById('loginOrRegister').action = action
+        document.getElementById('loginOrRegister').submit()
+      }
