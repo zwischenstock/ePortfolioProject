@@ -41,6 +41,33 @@ module.exports = {
 			}
 		}
 
+		if (req.session.lastErr) {
+			data.alert = req.session.lastErr
+			req.session.lastErr = null
+		}
+
+		if (req.session.lastNotice) {
+			data.notice = req.session.lastNotice
+			req.session.lastNotice = null
+		}
+
 		return res.render(location, data)
+	},
+
+	// Simple method of giving notices without passing around data
+	alert: function(req, str) {
+		req.session.lastErr = str
+	},
+	notice: function(req, str) {
+		req.session.lastNotice = str
+	},
+
+	// Used for checking against tracking/egg numbers
+	getPositiveInt: function(num) {
+		var n = parseInt(num)
+		if (typeof n != 'number' || n == NaN || n < 0)
+			return null
+
+		return n
 	}
 }
