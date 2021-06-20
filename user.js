@@ -8,7 +8,7 @@ class User {
 		// TODO: error if bad inputs
 
 		this.id = id // This should be how the user is identified in the database. For MongoDB, the _id field.
-		this.username
+		this.username = username
 		this.role = (Roles[role] ? role : Roles.Guest)
 	}
 
