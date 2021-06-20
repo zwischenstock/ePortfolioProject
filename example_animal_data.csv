@@ -1,0 +1,12 @@
+tracking,name,species,animal,eggs,nursing
+1,Tick-Tock,Oviparous,Crocodile,2,false
+2,Fidget,Mammal,Bat,0,true
+3,Willy,Mammal,Whale,0,false
+4,Bailey,Mammal,Whale,0,true
+5,Goose,Lee,Oviparous,Goose,0,false
+6,Honker,Oviparous,Goose,1,false
+7,Becky,Oviparous,Pelican,1,false
+8,Nigel,Oviparous,Pelican,0,false
+9,Fluke,Mammal,SeaLion,0,false
+10,Rudder,Mammal,SeaLion,0,true
+11,Bartok,Mammal,Bat,0,true
