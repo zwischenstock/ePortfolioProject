@@ -64,6 +64,9 @@ module.exports = {
 
 	// Used for checking against tracking/egg numbers
 	getPositiveInt: function(num) {
+		if (num == null)
+			return null
+
 		var n = parseInt(num)
 		if (typeof n != 'number' || n == NaN || n < 0)
 			return null

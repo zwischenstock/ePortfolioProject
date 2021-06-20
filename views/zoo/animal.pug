@@ -11,6 +11,8 @@ html
 
     form(id="animalActionForm" class="col-lg-6 offset-lg-3" method="POST" action="/zoo/modify")
       div(class="form-group row justify-content-center mt-3")
+        input(type="hidden" class="form-control" id="oldTracking" name="oldTracking" value=animal.tracking)
+
         label(for="animalName" class="col-sm-2 col-form-label") Name
         div(class="col-sm-10")
           input(type="text" class="form-control" id="animalName" name="name" value=animal.name)

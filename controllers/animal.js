@@ -44,13 +44,14 @@ exports.setup = function(app, util) {
 		if (!util.isAdmin(req))
 			return res.redirect('/')
 
-		if (req.body == null || req.body.tracking == null) {
+		// Purpose of oldTracking explained below in /zoo/modify
+		if (req.body == null || req.body.oldTracking == null) {
 			util.alert(req, 'No tracking ID specified')
 			res.redirect('/zoo')
 			return
 		}
 
-		var id = util.getPositiveInt(req.body.tracking)
+		var id = util.getPositiveInt(req.body.oldTracking)
 		if (id == null) {
 			util.alert(req, 'Invalid tracking ID provided')
 			res.redirect('/zoo')
@@ -74,6 +75,14 @@ exports.setup = function(app, util) {
 			return
 		}
 
+		// A lazy solution to needing the original tracking number: a hidden input that gets sent with the POST
+		var oldTracking = util.getPositiveInt(req.body.oldTracking)
+		if (oldTracking == null) {
+			util.alert(req, 'Could not determine original tracking number!')
+			res.redirect('/zoo')
+			return
+		}
+
 		var newFields = animal_model.processFields(req.body)
 		if (!newFields) {
 			util.alert(req, 'Invalid fields specified')
@@ -81,9 +90,11 @@ exports.setup = function(app, util) {
 			return
 		}
 
-		animal_model.update({tracking: newFields.tracking}, newFields, function(success, err) {
+		animal_model.update({tracking: oldTracking}, newFields, function(success, err) {
 			if (!success)
 				util.alert(req, err)
+			else
+				util.notice(req, 'Successfully updated')
 			
 			res.redirect('/zoo')
 		})
