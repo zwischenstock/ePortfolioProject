@@ -9,7 +9,7 @@ exports.setup = function(app, util) {
 	// Display all animals (TODO: Pagination)
 	app.get('/zoo', util.userView, function(req, res) {
 		db.animals.find({}).toArray(function(err, result) {
-			util.render(req, res, 'zoo/index', {animals: result})
+			util.render(req, res, 'zoo/index', {animals: result, canAdd: true})
 		})
 	})
 
