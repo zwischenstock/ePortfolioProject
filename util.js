@@ -13,9 +13,6 @@ module.exports = {
 
 	// Middleware - restricts a view to logged in users
 	userView: function(req, res, next) {
-		console.log("UserView called")
-		console.log(req.session.user)
-
 		if (req.session.user)
 			return next();
 
@@ -24,12 +21,12 @@ module.exports = {
 
 	// Similar to adminView, but for use within requests.
 	isAdmin: function(req) {
-		return (req.body.user && req.body.user.role == Roles.Admin)
+		return (req.session.user && req.session.user.role == Roles.Admin)
 	},
 
 	// Similar to userView, but for use within requests.
 	isUser: function(req) {
-		return (req.body.user && req.body.user.id)
+		return (req.session.user && req.session.user.id)
 	},
 
 	// Util replacement for res.render(location, data), which inserts user information into the render.
