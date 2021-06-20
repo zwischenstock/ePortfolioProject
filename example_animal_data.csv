@@ -3,7 +3,7 @@ tracking,name,species,animal,eggs,nursing
 2,Fidget,Mammal,Bat,0,true
 3,Willy,Mammal,Whale,0,false
 4,Bailey,Mammal,Whale,0,true
-5,Goose,Lee,Oviparous,Goose,0,false
+5,Lee,Oviparous,Goose,0,false
 6,Honker,Oviparous,Goose,1,false
 7,Becky,Oviparous,Pelican,1,false
 8,Nigel,Oviparous,Pelican,0,false
