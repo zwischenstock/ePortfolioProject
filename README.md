@@ -11,6 +11,7 @@ To run, execute `node app.js` and open `http://localhost:3000`.
 
 Setting up the Wildlife Zoo web app:  
 * Edit the `.env` file to configure the MongoDB information and session secret. To generate a random secret key, consider simply using `openssl rand -h 16`.  
+* Run `npm install` to install the app dependencies.  
 
 Setting up MongoDB:  
 * Follow [this guide](https://docs.mongodb.com/manual/tutorial/enable-authentication/) to configure a user account with access to the zoo database, providing the user account with access to read and write to the database.  
